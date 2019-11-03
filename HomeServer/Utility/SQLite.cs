@@ -122,7 +122,7 @@ namespace HomeServer.Utility
                 commandText += parameterName + ",";
                 SqliteParameter parameter = new SqliteParameter();
                 parameter.ParameterName = parameterName;
-                if (item != null)
+                if (item != null & item != "NULL")
                 {
                     parameter.Value = item;
                 }
@@ -140,13 +140,28 @@ namespace HomeServer.Utility
         public static void DeleteRow(string connectionString, string tableName, IList<string> row)
         {
             string commandText = $"DELETE FROM {tableName} WHERE ";
+            List<SqliteParameter> parameters = new List<SqliteParameter>();
             List<SQLiteColumn> columns = GetColumns(connectionString, tableName);
             for (int i = 0; i < columns.Count; i++)
             {
-                commandText += $"{columns[i].Name} = \'{row[i]}\' AND ";
+                string item = row[i];
+                
+                if (item != null & !item.Equals("NULL"))
+                {
+                    string parameterName = $"@parameter{i}";
+                    SqliteParameter parameter = new SqliteParameter();
+                    parameter.ParameterName = parameterName;
+                    parameter.Value = item;
+                    commandText += $"{columns[i].Name} = {parameterName} AND ";
+                    parameters.Add(parameter);
+                }
+                else
+                {
+                    commandText += $"{columns[i].Name} IS NULL AND ";
+                }
             }
             commandText = commandText.Substring(0, commandText.Length - 5);
-            ExecuteCommand(connectionString, commandText);
+            ExecuteCommand(connectionString, commandText, parameters);
         }
 
         public static void EditRow(string connectionString, string tableName, IList<string> row, IList<string> newRow)
@@ -158,26 +173,26 @@ namespace HomeServer.Utility
             for (int i = 0; i < columns.Count; i++)
             {
                 string oldItem = row[i];
-                string parameterOldName = $"@parameterOld{i}";
-                whereClause += columns[i].Name + " = " + parameterOldName + " AND ";
-                SqliteParameter oldParameter = new SqliteParameter();
-                oldParameter.ParameterName = parameterOldName;
-                if (oldItem != null)
+                if (oldItem != null & oldItem != "NULL")
                 {
+                    string parameterOldName = $"@parameterOld{i}";
+                    whereClause += $"{columns[i].Name} = {parameterOldName} AND ";
+                    SqliteParameter oldParameter = new SqliteParameter();
+                    oldParameter.ParameterName = parameterOldName;
                     oldParameter.Value = oldItem;
+                    parameters.Add(oldParameter);
                 }
                 else
                 {
-                    oldParameter.Value = DBNull.Value;
+                    whereClause += $"{columns[i].Name} IS NULL AND ";
                 }
-                parameters.Add(oldParameter);
 
                 string newItem = newRow[i];
                 string parameterNewName = $"@parameterNew{i}";
-                commandText += columns[i].Name + " = " + parameterNewName + ", ";
+                commandText += $"{columns[i].Name} = {parameterNewName}, ";
                 SqliteParameter newParameter = new SqliteParameter();
                 newParameter.ParameterName = parameterNewName;
-                if (newItem != null)
+                if (newItem != null & newItem != "NULL")
                 {
                     newParameter.Value = newItem;
                 }

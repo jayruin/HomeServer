@@ -88,5 +88,16 @@ namespace HomeServer.Areas.DataWarehouse.Controllers
             SQLiteUtility.ExecuteCommand(connectionString, commandText);
             return RedirectToAction("Tables", "Data", new { area = "DataWarehouse" });
         }
+
+        public IActionResult Query()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult QuerySubmit(string query)
+        {
+            return View(SQLiteUtility.GetQueryResult(connectionString, query));
+        }
     }
 }

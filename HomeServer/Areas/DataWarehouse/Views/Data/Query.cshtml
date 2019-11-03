@@ -1,0 +1,11 @@
+﻿
+@{
+    ViewData["Title"] = "Query";
+}
+
+<h1>Query</h1>
+
+<form asp-area="DataWarehouse" asp-controller="Data" asp-action="QuerySubmit" method="post">
+    <textarea rows="10" cols="100" name="query"></textarea>
+    <button type="submit">Submit</button>
+</form>
