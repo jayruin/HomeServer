@@ -1,0 +1,55 @@
+﻿@model TableModel
+@{
+    ViewData["Title"] = "Edit Table";
+}
+
+<link rel="stylesheet" href="~/Areas/DataWarehouse/css/tables.css" />
+
+<h1>@Model.Name</h1>
+
+<button id="definition-button" type="button">Definition</button>
+
+<pre id="definition" class="hide">@Model.Definition</pre>
+
+<form id="add-row" class="hide" asp-area="DataWarehouse" asp-controller="Data" asp-action="AddRow" method="post" asp-route-tableName=@Model.Name></form>
+<form id="delete-row" class="hide" asp-area="DataWarehouse" asp-controller="Data" asp-action="DeleteRow" method="post" asp-route-tableName=@Model.Name></form>
+<form id="edit-row" class="hide" asp-area="DataWarehouse" asp-controller="Data" asp-action="EditRow" method="post" asp-route-tableName=@Model.Name></form>
+<div class="hide" id="hiddenInputs">
+    @foreach (HomeServer.Utility.SQLiteColumn column in Model.Columns)
+    {
+        <input type="text" form="" name="row[@{Model.Columns.IndexOf(column);}]" />
+    }
+</div>
+
+<table>
+    <thead>
+        <tr>
+            @foreach (HomeServer.Utility.SQLiteColumn column in Model.Columns)
+            {
+                <th scope="col">
+                    <div>@column.Name</div>
+                    <input type="text" placeholder="@column.Type" form="add-row" name="row[@{Model.Columns.IndexOf(column);}]" />
+                </th>
+            }
+            <td class="vertical-align-bottom td-button"><button type="submit" id="add-button" form="add-row">Add</button></td>
+            <td class="vertical-align-bottom td-button"><button type="button" id="clear-button">Clear</button></td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (List<string> row in Model.Rows)
+        {
+            <tr>
+                @foreach (string item in row)
+                {
+                    <td>@item</td>
+                }
+                <td class="td-button"><button type="button" class="edit-button">Edit</button></td>
+                <td class="td-button"><button type="button" class="delete-button" form="delete-row">Delete</button></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<script src="~/Areas/DataWarehouse/js/SortTable.js"></script>
+<script src="~/Areas/DataWarehouse/js/EditTable.js"></script>
