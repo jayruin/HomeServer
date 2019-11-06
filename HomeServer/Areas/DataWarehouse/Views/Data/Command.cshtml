@@ -1,11 +1,38 @@
-﻿
+﻿@model IList<KeyValuePair<string, string>>
 @{
     ViewData["Title"] = "Command";
 }
 
+<link rel="stylesheet" href="~/Areas/DataWarehouse/css/tables.css" />
+
 <h1>Command</h1>
 
-<form asp-area="DataWarehouse" asp-controller="Data" asp-action="CommandSubmit" method="post">
-    <textarea rows="10" cols="100" name="commandText"></textarea>
-    <button type="submit">Submit</button>
-</form>
+<form id="submit-form" class="hide" asp-area="DataWarehouse" asp-controller="Data" asp-action="CommandSubmit" method="post"></form>
+<form id="save-form" class="hide" asp-area="DataWarehouse" asp-controller="Data" asp-action="CommandSave" method="post"></form>
+<form id="delete-form" class="hide" asp-area="DataWarehouse" asp-controller="Data" asp-action="CommandDelete" method="post"></form>
+<input id="delete-form-name" class="hide" form="delete-form" name="name" />
+
+<textarea id="value" rows="10" cols="100" name="commandText"></textarea>
+<button id="submit-button" type="button">Submit</button>
+<input id="key" type="text" name="name" />
+<button id="save-button" type="button">Save</button>
+
+<h2>Saved Commands</h2>
+
+<table>
+    <tr>
+        <td>Command Name</td>
+        <td>Command Definition</td>
+        <td>Delete Command</td>
+    </tr>
+    @foreach (KeyValuePair<string, string> item in Model)
+    {
+        <tr>
+            <td><a asp-area="DataWarehouse" asp-controller="Data" asp-action="CommandExecute" asp-route-name=@item.Key>@item.Key</a></td>
+            <td><pre>@item.Value</pre></td>
+            <td><button type="button" class="delete-button">Delete</button></td>
+        </tr>
+    }
+</table>
+
+<script src="~/Areas/DataWarehouse/js/CommandQuery.js"></script>

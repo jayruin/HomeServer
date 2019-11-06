@@ -20,11 +20,17 @@ namespace HomeServer.Areas.DataWarehouse.Controllers
 
         private readonly string connectionString;
 
+        private readonly SQLiteDictionary savedCommands;
+
+        private readonly SQLiteDictionary savedQueries;
+
         public DataController(ILogger<DataController> logger, IConfiguration config)
         {
             _logger = logger;
             configuration = config;
             connectionString = this.configuration.GetConnectionString("SQLite");
+            savedCommands = new SQLiteDictionary(this.configuration.GetConnectionString("SavedCommandsQueries"), "SavedCommands");
+            savedQueries = new SQLiteDictionary(this.configuration.GetConnectionString("SavedCommandsQueries"), "SavedQueries");
         }
 
         public IActionResult CreateTable()
@@ -79,14 +85,40 @@ namespace HomeServer.Areas.DataWarehouse.Controllers
 
         public IActionResult Command()
         {
-            return View();
+            List<KeyValuePair<string, string>> model = new List<KeyValuePair<string, string>>();
+            foreach (KeyValuePair<string, string> item in savedCommands)
+            {
+                model.Add(item);
+            }
+            return View(model);
         }
 
         [HttpPost]
         public IActionResult CommandSubmit(string commandText)
         {
             SQLiteUtility.ExecuteCommand(connectionString, commandText);
-            return RedirectToAction("Tables", "Data", new { area = "DataWarehouse" });
+            return RedirectToAction("Command", "Data", new { area = "DataWarehouse" });
+        }
+
+        [HttpPost]
+        public IActionResult CommandSave(string name, string commandText)
+        {
+            savedCommands[name] = commandText;
+            return RedirectToAction("Command", "Data", new { area = "DataWarehouse" });
+        }
+
+        [HttpPost]
+        public IActionResult CommandDelete(string name)
+        {
+            savedCommands.Remove(name);
+            return RedirectToAction("Command", "Data", new { area = "DataWarehouse" });
+        }
+
+        [HttpGet]
+        public IActionResult CommandExecute(string name)
+        {
+            SQLiteUtility.ExecuteCommand(connectionString, savedCommands[name]);
+            return RedirectToAction("Command", "Data", new { area = "DataWarehouse" });
         }
 
         public IActionResult Query()
@@ -98,6 +130,12 @@ namespace HomeServer.Areas.DataWarehouse.Controllers
         public IActionResult QuerySubmit(string query)
         {
             return View(SQLiteUtility.GetQueryResult(connectionString, query));
+        }
+
+        [HttpGet]
+        public IActionResult SavedQuery(string queryBase64)
+        {
+            return View("QuerySubmit", SQLiteUtility.GetQueryResult(connectionString, Base64.Base64Decode(queryBase64)));
         }
     }
 }

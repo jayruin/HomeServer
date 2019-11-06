@@ -14,7 +14,7 @@
 <form id="add-row" class="hide" asp-area="DataWarehouse" asp-controller="Data" asp-action="AddRow" method="post" asp-route-tableName=@Model.Name></form>
 <form id="delete-row" class="hide" asp-area="DataWarehouse" asp-controller="Data" asp-action="DeleteRow" method="post" asp-route-tableName=@Model.Name></form>
 <form id="edit-row" class="hide" asp-area="DataWarehouse" asp-controller="Data" asp-action="EditRow" method="post" asp-route-tableName=@Model.Name></form>
-<div class="hide" id="hiddenInputs">
+<div id="hiddenInputs" class="hide">
     @foreach (HomeServer.Utility.SQLiteColumn column in Model.Columns)
     {
         <input type="text" form="" name="row[@{Model.Columns.IndexOf(column);}]" />

@@ -10,6 +10,10 @@ namespace HomeServer.Utility
 {
     public static class SQLiteUtility
     {
+        public static bool IsNull(string item)
+        {
+            return item is null || item.Equals("NULL") || item.Equals("");
+        }
         public static SqliteType ConvertDataTypeName(string dataTypeName)
         {
             switch (dataTypeName)
@@ -122,7 +126,7 @@ namespace HomeServer.Utility
                 commandText += parameterName + ",";
                 SqliteParameter parameter = new SqliteParameter();
                 parameter.ParameterName = parameterName;
-                if (item != null & item != "NULL")
+                if (!IsNull(item))
                 {
                     parameter.Value = item;
                 }
@@ -146,7 +150,7 @@ namespace HomeServer.Utility
             {
                 string item = row[i];
                 
-                if (item != null & !item.Equals("NULL"))
+                if (!IsNull(item))
                 {
                     string parameterName = $"@parameter{i}";
                     SqliteParameter parameter = new SqliteParameter();
@@ -173,7 +177,7 @@ namespace HomeServer.Utility
             for (int i = 0; i < columns.Count; i++)
             {
                 string oldItem = row[i];
-                if (oldItem != null & oldItem != "NULL")
+                if (!IsNull(oldItem))
                 {
                     string parameterOldName = $"@parameterOld{i}";
                     whereClause += $"{columns[i].Name} = {parameterOldName} AND ";
@@ -192,7 +196,7 @@ namespace HomeServer.Utility
                 commandText += $"{columns[i].Name} = {parameterNewName}, ";
                 SqliteParameter newParameter = new SqliteParameter();
                 newParameter.ParameterName = parameterNewName;
-                if (newItem != null & newItem != "NULL")
+                if (!IsNull(newItem))
                 {
                     newParameter.Value = newItem;
                 }
@@ -226,8 +230,9 @@ namespace HomeServer.Utility
             }
         }
 
-        public static QueryResultModel GetQueryResult(string connectionString, string query)
+        public static QueryResultModel GetQueryResult(string connectionString, string query, IList<SqliteParameter> parameters = null)
         {
+            parameters = parameters ?? new List<SqliteParameter>();
             List<List<string>> rows = new List<List<string>>();
             List<string> row;
             List<SQLiteColumn> columns = new List<SQLiteColumn>();
@@ -236,6 +241,10 @@ namespace HomeServer.Utility
                 conn.Open();
                 using (SqliteCommand command = new SqliteCommand(query, conn))
                 {
+                    foreach (SqliteParameter parameter in parameters)
+                    {
+                        command.Parameters.Add(parameter);
+                    }
                     SqliteDataReader reader = command.ExecuteReader();
                     for (int i = 0; i < reader.FieldCount; i++)
                     {

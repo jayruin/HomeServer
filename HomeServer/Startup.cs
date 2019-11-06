@@ -49,6 +49,14 @@ namespace HomeServer
                     pattern: "DataWarehouse/Data/EditTable/{tableName}",
                     defaults: new { area = "DataWarehouse", controller = "Data", action = "EditTable" });
                 endpoints.MapControllerRoute(
+                    name: "CommandExecute",
+                    pattern: "DataWarehouse/Data/CommandExecute/{name}",
+                    defaults: new { area = "DataWarehouse", controller = "Data", action = "CommandExecute" });
+                endpoints.MapControllerRoute(
+                    name: "QueryExecute",
+                    pattern: "DataWarehouse/Data/QueryExecute/{name}",
+                    defaults: new { area = "DataWarehouse", controller = "Data", action = "QueryExecute" });
+                endpoints.MapControllerRoute(
                     name: "areas",
                     pattern: "{area:exists}/{controller}/{action}/{id?}");
                 endpoints.MapControllerRoute(
