@@ -19,18 +19,3 @@ table input[type="text"] {
     box-sizing: border-box;
 }
 
-.vertical-align-top {
-    vertical-align: top;
-}
-
-.vertical-align-middle {
-    vertical-align: middle;
-}
-
-.vertical-align-bottom {
-    vertical-align: bottom;
-}
-
-.hide {
-    display: none;
-}
