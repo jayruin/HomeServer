@@ -123,7 +123,12 @@ namespace HomeServer.Areas.DataWarehouse.Controllers
 
         public IActionResult Query()
         {
-            return View();
+            List<KeyValuePair<string, string>> model = new List<KeyValuePair<string, string>>();
+            foreach (KeyValuePair<string, string> item in savedQueries)
+            {
+                model.Add(item);
+            }
+            return View(model);
         }
 
         [HttpPost]
@@ -132,10 +137,24 @@ namespace HomeServer.Areas.DataWarehouse.Controllers
             return View(SQLiteUtility.GetQueryResult(connectionString, query));
         }
 
-        [HttpGet]
-        public IActionResult SavedQuery(string queryBase64)
+        [HttpPost]
+        public IActionResult QuerySave(string name, string query)
         {
-            return View("QuerySubmit", SQLiteUtility.GetQueryResult(connectionString, Base64.Base64Decode(queryBase64)));
+            savedQueries[name] = query;
+            return RedirectToAction("Query", "Data", new { area = "DataWarehouse" });
+        }
+
+        [HttpPost]
+        public IActionResult QueryDelete(string name)
+        {
+            savedQueries.Remove(name);
+            return RedirectToAction("Query", "Data", new { area = "DataWarehouse" });
+        }
+
+        [HttpGet]
+        public IActionResult QueryExecute(string name)
+        {
+            return View("QuerySubmit", SQLiteUtility.GetQueryResult(connectionString, savedQueries[name]));
         }
     }
 }

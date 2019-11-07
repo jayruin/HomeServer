@@ -1,11 +1,39 @@
-﻿
+﻿@model IList<KeyValuePair<string, string>>
 @{
     ViewData["Title"] = "Query";
 }
 
+<link rel="stylesheet" href="~/css/main.css" />
+<link rel="stylesheet" href="~/Areas/DataWarehouse/css/tables.css" />
+
 <h1>Query</h1>
 
-<form asp-area="DataWarehouse" asp-controller="Data" asp-action="QuerySubmit" method="post">
-    <textarea rows="10" cols="100" name="query"></textarea>
-    <button type="submit">Submit</button>
-</form>
+<form id="submit-form" class="hide" asp-area="DataWarehouse" asp-controller="Data" asp-action="QuerySubmit" method="post"></form>
+<form id="save-form" class="hide" asp-area="DataWarehouse" asp-controller="Data" asp-action="QuerySave" method="post"></form>
+<form id="delete-form" class="hide" asp-area="DataWarehouse" asp-controller="Data" asp-action="QueryDelete" method="post"></form>
+<input id="delete-form-name" class="hide" form="delete-form" name="name" />
+
+<textarea id="value" rows="10" cols="100" name="query"></textarea>
+<button id="submit-button" type="button">Submit</button>
+<input id="key" type="text" name="name" />
+<button id="save-button" type="button">Save</button>
+
+<h2>Saved Commands</h2>
+
+<table>
+    <tr>
+        <td>Query Name</td>
+        <td>Query Definition</td>
+        <td>Delete Query</td>
+    </tr>
+    @foreach (KeyValuePair<string, string> item in Model)
+    {
+        <tr>
+            <td><a asp-area="DataWarehouse" asp-controller="Data" asp-action="QueryExecute" asp-route-name=@item.Key>@item.Key</a></td>
+            <td><pre>@item.Value</pre></td>
+            <td><button type="button" class="delete-button">Delete</button></td>
+        </tr>
+    }
+</table>
+
+<script src="~/Areas/DataWarehouse/js/CommandQuery.js"></script>
