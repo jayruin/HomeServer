@@ -20,8 +20,15 @@ namespace HomeServer.Areas.Identity
                     options.UseSqlite(
                         context.Configuration.GetConnectionString("HomeServerContextConnection")));
 
-                services.AddDefaultIdentity<HomeServerUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                services.AddIdentity<HomeServerUser, IdentityRole>(options => {
+                    options.Password.RequireDigit = false;
+                    options.Password.RequireLowercase = false;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireUppercase = false;
+                })
                     .AddEntityFrameworkStores<HomeServerContext>();
+
+                services.AddMvc();
             });
         }
     }
