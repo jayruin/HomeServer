@@ -4,6 +4,7 @@ using HomeServer.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,7 +21,8 @@ namespace HomeServer.Areas.Identity
                     options.UseSqlite(
                         context.Configuration.GetConnectionString("HomeServerContextConnection")));
 
-                services.AddIdentity<HomeServerUser, IdentityRole>(options => {
+                services.AddIdentity<HomeServerUser, IdentityRole>(options =>
+                {
                     options.Password.RequireDigit = false;
                     options.Password.RequireLowercase = false;
                     options.Password.RequireNonAlphanumeric = false;
@@ -29,6 +31,20 @@ namespace HomeServer.Areas.Identity
                     .AddEntityFrameworkStores<HomeServerContext>();
 
                 services.AddMvc();
+
+                services.ConfigureApplicationCookie(options =>
+                {
+                    options.LoginPath = "/Identity/Account/Login";
+                });
+
+                services.AddAuthorization(options =>
+                {
+                    options.AddPolicy("SiteAdmin", policy =>
+                    {
+                        policy.RequireAuthenticatedUser();
+                        policy.RequireRole("Admin");
+                    });
+                });
             });
         }
     }

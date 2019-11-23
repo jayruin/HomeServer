@@ -8,10 +8,12 @@ using Microsoft.Extensions.Logging;
 using HomeServer.Areas.DataWarehouse.Models;
 using HomeServer.Utility;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HomeServer.Areas.DataWarehouse.Controllers
 {
     [Area("DataWarehouse")]
+    [Authorize(Policy = "SiteAdmin")]
     public class DataController : Controller
     {
         private readonly ILogger<DataController> _logger;
