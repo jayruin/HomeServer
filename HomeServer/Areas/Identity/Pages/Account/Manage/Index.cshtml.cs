@@ -90,7 +90,8 @@ namespace HomeServer.Areas.Identity.Pages.Account.Manage
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             if (Input.PhoneNumber != phoneNumber)
             {
-                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
+                var code = await _userManager.GenerateChangePhoneNumberTokenAsync(user, Input.PhoneNumber);
+                var setPhoneResult = await _userManager.ChangePhoneNumberAsync(user, Input.PhoneNumber, code);
                 if (!setPhoneResult.Succeeded)
                 {
                     var userId = await _userManager.GetUserIdAsync(user);

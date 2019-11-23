@@ -28,7 +28,8 @@ namespace HomeServer.Areas.Identity
                     options.Password.RequireNonAlphanumeric = false;
                     options.Password.RequireUppercase = false;
                 })
-                    .AddEntityFrameworkStores<HomeServerContext>();
+                    .AddEntityFrameworkStores<HomeServerContext>()
+                    .AddDefaultTokenProviders();
 
                 services.AddMvc();
 
