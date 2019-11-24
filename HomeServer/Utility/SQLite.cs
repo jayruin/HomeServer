@@ -16,15 +16,15 @@ namespace HomeServer.Utility
         }
         public static SqliteType ConvertDataTypeName(string dataTypeName)
         {
-            switch (dataTypeName)
+            switch (dataTypeName.ToUpper())
             {
-                case "integer":
+                case string s when s.Contains("INT"):
                     return SqliteType.Integer;
-                case "text":
+                case string s when s.Contains("CHAR") || s.Contains("CLOB") || s.Contains("TEXT"):
                     return SqliteType.Text;
-                case "real":
+                case string s when s.Contains("REAL") || s.Contains("FLOA") || s.Contains("DOUB"):
                     return SqliteType.Real;
-                case "blob":
+                case "BLOB":
                     return SqliteType.Blob;
                 default:
                     return SqliteType.Text;
