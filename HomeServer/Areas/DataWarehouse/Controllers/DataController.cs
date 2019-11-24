@@ -9,6 +9,7 @@ using HomeServer.Areas.DataWarehouse.Models;
 using HomeServer.Utility;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authorization;
+using System.Text;
 
 namespace HomeServer.Areas.DataWarehouse.Controllers
 {
@@ -157,6 +158,12 @@ namespace HomeServer.Areas.DataWarehouse.Controllers
         public IActionResult QueryExecute(string name)
         {
             return View("QuerySubmit", SQLiteUtility.GetQueryResult(connectionString, savedQueries[name]));
+        }
+
+        [HttpPost]
+        public IActionResult ExportCSV(string query)
+        {
+            return File(Encoding.UTF8.GetBytes(SQLiteUtility.GetQueryResult(connectionString, query).ConvertToCSV()), "text/csv", "data.csv");
         }
     }
 }

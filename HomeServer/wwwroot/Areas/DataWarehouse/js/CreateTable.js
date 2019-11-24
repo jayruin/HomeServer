@@ -7,19 +7,19 @@ function getDataTypes() {
 
     let datainteger = document.createElement("option");
     datainteger.text = "INTEGER";
-    datainteger.value = "integer";
+    datainteger.value = "INTEGER";
 
     let datatext = document.createElement("option");
     datatext.text = "TEXT";
-    datatext.value = "text";
+    datatext.value = "TEXT";
 
     let datareal = document.createElement("option");
     datareal.text = "REAL";
-    datareal.value = "real";
+    datareal.value = "REAL";
 
     let datablob = document.createElement("option");
     datablob.text = "BLOB";
-    datablob.value = "blob";
+    datablob.value = "BLOB";
 
     datatypes.push(datainteger);
     datatypes.push(datatext);

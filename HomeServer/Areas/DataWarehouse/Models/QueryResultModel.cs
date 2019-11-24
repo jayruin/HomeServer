@@ -18,5 +18,31 @@ namespace HomeServer.Areas.DataWarehouse.Models
             this.Columns = columns;
             this.Rows = rows;
         }
+
+        public string ConvertToCSV()
+        {
+            string csvString = "";
+
+            List<string> colNames = new List<string>();
+
+            foreach (SQLiteColumn col in Columns)
+            {
+                colNames.Add($"\"{col.Name}\"");
+            }
+
+            csvString += String.Join(",", colNames) + "\n";
+
+            foreach (List<string> row in Rows)
+            {
+                List<string> currRow = new List<string>();
+                foreach(string item in row)
+                {
+                    currRow.Add($"\"{item}\"");
+                }
+                csvString += String.Join(",", currRow) + "\n";
+            }
+
+            return csvString;
+        }
     }
 }

@@ -8,6 +8,10 @@
 
 <h1>@Model.Name</h1>
 
+<form asp-area="DataWarehouse" asp-controller="Data" asp-action="ExportCSV" method="post" asp-route-query=@Model.Query>
+    <button type="submit">Export CSV</button>
+</form>
+
 <button id="definition-button" type="button">Definition</button>
 
 <pre id="definition" class="hide">@Model.Definition</pre>
