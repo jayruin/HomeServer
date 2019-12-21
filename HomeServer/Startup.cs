@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 namespace HomeServer
 {
@@ -40,6 +42,13 @@ namespace HomeServer
 
             app.UseStaticFiles();
 
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+            Path.Combine(Directory.GetCurrentDirectory(), "FileStorage")),
+                RequestPath = "/FileStorage"
+            });
+
             app.UseRouting();
 
             app.UseAuthentication();
@@ -60,6 +69,10 @@ namespace HomeServer
                     name: "QueryExecute",
                     pattern: "DataWarehouse/Data/QueryExecute/{name}",
                     defaults: new { area = "DataWarehouse", controller = "Data", action = "QueryExecute" });
+                endpoints.MapControllerRoute(
+                    name: "Browse",
+                    pattern: "FileManager/FileExplorer/Browse/{base64Path}",
+                    defaults: new { area = "FileManager", controller = "FileExplorer", action = "Browse" });
                 endpoints.MapControllerRoute(
                     name: "areas",
                     pattern: "{area:exists}/{controller}/{action}/{id?}");

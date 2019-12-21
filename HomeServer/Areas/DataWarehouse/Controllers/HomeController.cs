@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace HomeServer.DataWarehouse.Controllers
+namespace HomeServer.Areas.DataWarehouse.Controllers
 {
     [Area("DataWarehouse")]
     public class HomeController : Controller
