@@ -74,6 +74,10 @@ namespace HomeServer
                     pattern: "FileManager/FileExplorer/Browse/{base64Path}",
                     defaults: new { area = "FileManager", controller = "FileExplorer", action = "Browse" });
                 endpoints.MapControllerRoute(
+                    name: "Browse",
+                    pattern: "FileManager/FileExplorer/Download/{base64Path}",
+                    defaults: new { area = "FileManager", controller = "FileExplorer", action = "Download" });
+                endpoints.MapControllerRoute(
                     name: "areas",
                     pattern: "{area:exists}/{controller}/{action}/{id?}");
                 endpoints.MapControllerRoute(

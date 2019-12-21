@@ -7,15 +7,17 @@
 
 @if (Model.MimeType.StartsWith("image"))
 {
-    <img src="@Model.NodePathURL" />
+    <img src="@Model.NodePathURL" alt="Your browser does not support this image format, you can download it instead." />
 }
 
 @if (Model.MimeType.StartsWith("video"))
 {
-    <video src="@Model.NodePathURL" controls />
+    <video src="@Model.NodePathURL" controls>Your browser does not support this video file, you can download it instead.</video>
 }
 
 @if (Model.MimeType.StartsWith("audio"))
 {
-    <audio src="@Model.NodePathURL" controls />
+    <audio src="@Model.NodePathURL" controls>Your browser does not support this audio file, you can download it instead.</audio>
 }
+
+<a asp-area="FileManager" asp-controller="FileExplorer" asp-action="Download" asp-route-base64Path="@Model.NodePathBase64">Download</a>

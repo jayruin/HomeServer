@@ -22,10 +22,10 @@
 
   <ItemGroup>
     <Folder Include="Areas\FileManager\Data\" />
-    <Folder Include="Areas\FileManager\Models\" />
     <Folder Include="Databases\" />
     <Folder Include="Migrations\" />
     <Folder Include="FileStorage\" />
+    <Folder Include="TempFiles\" />
   </ItemGroup>
 
 
