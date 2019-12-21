@@ -11,7 +11,7 @@ namespace HomeServer.Utility
     {
         private static FileExtensionContentTypeProvider systemMimeMapper = new FileExtensionContentTypeProvider();
 
-        private static string root = "Files";
+        private static string root = "FileStorage";
 
         public static FileSystemNode GetNode(string path)
         {
@@ -27,7 +27,16 @@ namespace HomeServer.Utility
         {
             get
             {
-                return Base64.Base64Encode(NodePath);
+                int rootIndex = NodePath.IndexOf(@"\") + 1;
+                return Base64.Base64Encode(NodePath.Substring(rootIndex, NodePath.Length - rootIndex));
+            }
+        }
+
+        public string NodePathURL
+        {
+            get
+            {
+                return @$"\{NodePath}".Replace(@"\", "/");
             }
         }
 

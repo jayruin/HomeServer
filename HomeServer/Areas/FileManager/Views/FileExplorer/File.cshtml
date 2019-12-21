@@ -1,7 +1,21 @@
-﻿
+﻿@model FileSystemNode
 @{
     ViewData["Title"] = "File";
 }
 
 <h1>File</h1>
 
+@if (Model.MimeType.StartsWith("image"))
+{
+    <img src="@Model.NodePathURL" />
+}
+
+@if (Model.MimeType.StartsWith("video"))
+{
+    <video src="@Model.NodePathURL" controls />
+}
+
+@if (Model.MimeType.StartsWith("audio"))
+{
+    <audio src="@Model.NodePathURL" controls />
+}

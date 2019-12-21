@@ -14,7 +14,7 @@ namespace HomeServer.Areas.FileManager.Controllers
     {
         public IActionResult Browse(string base64Path)
         {
-            FileSystemNode model = FileSystem.GetNode(Base64.Base64Decode(base64Path));
+            FileSystemNode model = FileSystem.GetNode(Base64.Base64Decode(base64Path ?? ""));
             if (model.IsFile)
             {
                 return View("File", model);
