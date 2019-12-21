@@ -20,7 +20,11 @@ namespace HomeServer
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder.ConfigureKestrel((context, options) =>
+                    {
+                        options.Limits.MaxRequestBodySize = 8000000000;
+                    })
+                    .UseStartup<Startup>();
                 });
     }
 }

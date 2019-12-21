@@ -6,6 +6,7 @@ using System.IO;
 using System.IO.Compression;
 using Microsoft.AspNetCore.StaticFiles;
 using HomeServer.Utility;
+using Microsoft.AspNetCore.Http;
 
 namespace HomeServer.Areas.FileManager.Models
 {
@@ -38,7 +39,10 @@ namespace HomeServer.Areas.FileManager.Models
 
         public static void CreateDirectory(FileSystemNode directory, string newDirectoryName)
         {
-            Directory.CreateDirectory(Path.Combine(directory.NodePath, newDirectoryName));
+            if (directory.IsDirectory)
+            {
+                Directory.CreateDirectory(Path.Combine(directory.NodePath, newDirectoryName));
+            }
         }
 
         public static FileSystemNode Delete(FileSystemNode node)
@@ -57,6 +61,20 @@ namespace HomeServer.Areas.FileManager.Models
                 Directory.Delete(node.NodePath, true);
             }
             return new FileSystemNode(Path.GetDirectoryName(node.NodePath), systemMimeMapper);
+        }
+
+        public static void SaveUploadedFiles(FileSystemNode directory, IFormFileCollection uploadedFiles)
+        {
+            if (directory.IsDirectory)
+            {
+                foreach (IFormFile uploadedFile in uploadedFiles)
+                {
+                    using (FileStream fileStream = File.Open(Path.Combine(directory.NodePath, uploadedFile.FileName), FileMode.OpenOrCreate, FileAccess.Write))
+                    {
+                        uploadedFile.CopyTo(fileStream);
+                    }
+                }
+            }
         }
     }
 

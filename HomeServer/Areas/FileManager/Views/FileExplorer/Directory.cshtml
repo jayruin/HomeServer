@@ -30,3 +30,9 @@
     <textarea name="base64path" class="hide">@Model.NodePathBase64</textarea>
     <button type="submit">Delete</button>
 </form>
+
+<form id="create-directory-form" asp-area="FileManager" asp-controller="FileExplorer" asp-action="UploadFiles" method="post" enctype="multipart/form-data">
+    <textarea name="base64path" class="hide">@Model.NodePathBase64</textarea>
+    <input type="file" name="uploadedFiles" multiple />
+    <button type="submit">Upload</button>
+</form>
