@@ -13,6 +13,7 @@ namespace HomeServer.Areas.FileManager.Controllers
     [Authorize(Policy = "SiteAdmin")]
     public class FileExplorerController : Controller
     {
+        [HttpGet]
         public IActionResult Browse(string base64Path)
         {
             FileSystemNode model = FileSystem.GetNode(Base64.Base64Decode(base64Path ?? ""));
@@ -26,6 +27,7 @@ namespace HomeServer.Areas.FileManager.Controllers
             }
         }
 
+        [HttpGet]
         public IActionResult Download(string base64Path)
         {
             FileSystemNode model = FileSystem.GetNode(Base64.Base64Decode(base64Path ?? ""));
@@ -38,6 +40,24 @@ namespace HomeServer.Areas.FileManager.Controllers
                 string zipName = model.Name + ".zip";
                 return File(FileSystem.DirectoryGetZipStream(model), FileSystem.GetMimeType(zipName), zipName);
             }
+        }
+
+        [HttpPost]
+        public IActionResult CreateDirectory(string base64Path, string newDirectoryName)
+        {
+            FileSystemNode model = FileSystem.GetNode(Base64.Base64Decode(base64Path ?? ""));
+            if (model.IsDirectory)
+            {
+                FileSystem.CreateDirectory(model, newDirectoryName);
+            }
+            return RedirectToAction("Browse", "FileExplorer", new { area = "FileManager", base64Path = model.NodePathBase64 });
+        }
+
+        [HttpPost]
+        public IActionResult Delete(string base64Path)
+        {
+            FileSystemNode model = FileSystem.GetNode(Base64.Base64Decode(base64Path ?? ""));
+            return RedirectToAction("Browse", "FileExplorer", new { area = "FileManager", base64Path = FileSystem.Delete(model).NodePathBase64 });
         }
     }
 }

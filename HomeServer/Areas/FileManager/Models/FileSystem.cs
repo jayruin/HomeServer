@@ -35,6 +35,29 @@ namespace HomeServer.Areas.FileManager.Models
             systemMimeMapper.TryGetContentType(fileName, out type);
             return type;
         }
+
+        public static void CreateDirectory(FileSystemNode directory, string newDirectoryName)
+        {
+            Directory.CreateDirectory(Path.Combine(directory.NodePath, newDirectoryName));
+        }
+
+        public static FileSystemNode Delete(FileSystemNode node)
+        {
+            if (node.NodePath.Equals(root))
+            {
+                return node;
+            }
+
+            if (node.IsFile)
+            {
+                File.Delete(node.NodePath);
+            }
+            else if (node.IsDirectory)
+            {
+                Directory.Delete(node.NodePath, true);
+            }
+            return new FileSystemNode(Path.GetDirectoryName(node.NodePath), systemMimeMapper);
+        }
     }
 
     public class FileSystemNode
@@ -45,6 +68,10 @@ namespace HomeServer.Areas.FileManager.Models
         {
             get
             {
+                if (!NodePath.Contains(@"\"))
+                {
+                    return "";
+                }
                 int rootIndex = NodePath.IndexOf(@"\") + 1;
                 return Base64.Base64Encode(NodePath.Substring(rootIndex, NodePath.Length - rootIndex));
             }

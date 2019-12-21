@@ -3,6 +3,8 @@
     ViewData["Title"] = "Directory";
 }
 
+<link rel="stylesheet" href="~/css/main.css" />
+
 <h1>@Model.NodePath</h1>
 
 <table>
@@ -15,4 +17,16 @@
     }
 </table>
 
-<a asp-area="FileManager" asp-controller="FileExplorer" asp-action="Download" asp-route-base64Path="@Model.NodePathBase64">Download</a>
+<form id="download-form" asp-area="FileManager" asp-controller="FileExplorer" asp-action="Download" asp-route-base64Path="@Model.NodePathBase64" method="get">
+    <button type="submit">Download</button>
+</form>
+
+<form id="create-directory-form" asp-area="FileManager" asp-controller="FileExplorer" asp-action="CreateDirectory" asp-route-base64Path="@Model.NodePathBase64" method="post">
+    <input type="text" name="newDirectoryName" placeholder="New Directory Name" />
+    <button type="submit">Create New Directory</button>
+</form>
+
+<form id="create-directory-form" asp-area="FileManager" asp-controller="FileExplorer" asp-action="Delete" method="post">
+    <textarea name="base64path" class="hide">@Model.NodePathBase64</textarea>
+    <button type="submit">Delete</button>
+</form>
