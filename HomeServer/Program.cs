@@ -22,7 +22,7 @@ namespace HomeServer
                 {
                     webBuilder.ConfigureKestrel((context, options) =>
                     {
-                        options.Limits.MaxRequestBodySize = 8000000000;
+                        options.Limits.MaxRequestBodySize = 4294967295;
                     })
                     .UseStartup<Startup>();
                 });

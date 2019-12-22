@@ -62,6 +62,7 @@ namespace HomeServer.Areas.FileManager.Controllers
         }
 
         [HttpPost]
+        [RequestSizeLimit(4294967295)]
         public IActionResult UploadFiles(string base64Path, IFormFileCollection uploadedFiles)
         {
             FileSystemNode model = FileSystem.GetNode(Base64.Base64Decode(base64Path ?? ""));
