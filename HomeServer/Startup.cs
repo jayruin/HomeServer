@@ -28,7 +28,7 @@ namespace HomeServer
             services.AddControllersWithViews();
             services.Configure<FormOptions>(options =>
             {
-                options.MultipartBodyLengthLimit = 8000000000;
+                options.MultipartBodyLengthLimit = 4294967295;
             });
         }
 

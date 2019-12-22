@@ -4,18 +4,9 @@
 }
 
 <link rel="stylesheet" href="~/css/main.css" />
+<link rel="stylesheet" href="~/Areas/FileManager/css/directory.css" />
 
 <h1>@Model.NodePath</h1>
-
-<table>
-    @foreach (FileSystemNode childNode in Model.ChildNodes)
-    {
-        <tr>
-            <td><a asp-area="FileManager" asp-controller="FileExplorer" asp-action="Browse" asp-route-base64Path="@childNode.NodePathBase64">@childNode.NodePath</a></td>
-            <td>@childNode.Size</td>
-        </tr>
-    }
-</table>
 
 <form id="download-form" asp-area="FileManager" asp-controller="FileExplorer" asp-action="Download" asp-route-base64Path="@Model.NodePathBase64" method="get">
     <button type="submit">Download</button>
@@ -36,3 +27,36 @@
     <input type="file" name="uploadedFiles" multiple />
     <button type="submit">Upload</button>
 </form>
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Size</th>
+            <th>Type</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (FileSystemNode childNode in Model.ChildNodes)
+        {
+            <tr>
+                <td><a asp-area="FileManager" asp-controller="FileExplorer" asp-action="Browse" asp-route-base64Path="@childNode.NodePathBase64">@childNode.Name</a></td>
+                <td>@childNode.Size</td>
+                @{
+                    if (childNode.IsDirectory)
+                    {
+                        <td>Directory</td>
+                    }
+                    else if (childNode.IsFile)
+                    {
+                        <td>File</td>
+                    }
+                    else
+                    {
+                        <td>Unknown</td>
+                    }
+                 }
+            </tr>
+        }
+    </tbody>
+</table>

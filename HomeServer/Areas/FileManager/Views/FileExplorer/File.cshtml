@@ -4,23 +4,9 @@
 }
 
 <link rel="stylesheet" href="~/css/main.css" />
+<link rel="stylesheet" href="~/Areas/FileManager/css/file.css" />
 
 <h1>@Model.Name</h1>
-
-@if (Model.MimeType.StartsWith("image"))
-{
-    <img src="@Model.NodePathURL" alt="Your browser does not support this image format, you can download it instead." />
-}
-
-@if (Model.MimeType.StartsWith("video"))
-{
-    <video src="@Model.NodePathURL" controls>Your browser does not support this video file, you can download it instead.</video>
-}
-
-@if (Model.MimeType.StartsWith("audio"))
-{
-    <audio src="@Model.NodePathURL" controls>Your browser does not support this audio file, you can download it instead.</audio>
-}
 
 <form id="download-form" asp-area="FileManager" asp-controller="FileExplorer" asp-action="Download" asp-route-base64Path="@Model.NodePathBase64" method="get">
     <button type="submit">Download</button>
@@ -30,3 +16,18 @@
     <textarea name="base64path" class="hide">@Model.NodePathBase64</textarea>
     <button type="submit">Delete</button>
 </form>
+
+@if (Model.MimeType.StartsWith("image"))
+{
+    <img src="@Model.NodePathURL" alt="Your browser does not support this image format, you can download it instead." class="media-file" />
+}
+
+@if (Model.MimeType.StartsWith("video"))
+{
+    <video src="@Model.NodePathURL" controls class="media-file">Your browser does not support this video file, you can download it instead.</video>
+}
+
+@if (Model.MimeType.StartsWith("audio"))
+{
+    <audio src="@Model.NodePathURL" controls class="media-file">Your browser does not support this audio file, you can download it instead.</audio>
+}
