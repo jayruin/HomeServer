@@ -3,8 +3,10 @@
     ViewData["Title"] = "Edit Table";
 }
 
-<link rel="stylesheet" href="~/css/main.css" />
-<link rel="stylesheet" href="~/Areas/DataWarehouse/css/tables.css" />
+@section Styles {
+    <link rel="stylesheet" href="~/css/main.css" />
+    <link rel="stylesheet" href="~/Areas/DataWarehouse/css/tables.css" />
+}
 
 <h1>@Model.Name</h1>
 
@@ -56,5 +58,7 @@
 </table>
 
 
-<script src="~/Areas/DataWarehouse/js/SortTable.js"></script>
-<script src="~/Areas/DataWarehouse/js/EditTable.js"></script>
+@section Scripts {
+    <script src="~/Areas/DataWarehouse/js/SortTable.js"></script>
+    <script src="~/Areas/DataWarehouse/js/EditTable.js"></script>
+}
