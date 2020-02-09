@@ -3,40 +3,41 @@
     ViewData["Title"] = "Command";
 }
 
-@section Styles {
-    <link rel="stylesheet" href="~/css/main.css" />
-    <link rel="stylesheet" href="~/Areas/DataWarehouse/css/tables.css" />
-}
-
 <h1>Command</h1>
 
-<form id="submit-form" class="hide" asp-area="DataWarehouse" asp-controller="Data" asp-action="CommandSubmit" method="post"></form>
-<form id="save-form" class="hide" asp-area="DataWarehouse" asp-controller="Data" asp-action="CommandSave" method="post"></form>
-<form id="delete-form" class="hide" asp-area="DataWarehouse" asp-controller="Data" asp-action="CommandDelete" method="post"></form>
-<input id="delete-form-name" class="hide" form="delete-form" name="name" />
+<form id="submit-form" class="d-none" asp-area="DataWarehouse" asp-controller="Data" asp-action="CommandSubmit" method="post"></form>
+<form id="save-form" class="d-none" asp-area="DataWarehouse" asp-controller="Data" asp-action="CommandSave" method="post"></form>
+<form id="delete-form" class="d-none" asp-area="DataWarehouse" asp-controller="Data" asp-action="CommandDelete" method="post"></form>
+<input id="delete-form-name" class="d-none" form="delete-form" name="name" />
 
 <textarea id="value" rows="10" cols="100" name="commandText"></textarea>
-<button id="submit-button" type="button">Submit</button>
+<button id="submit-button" type="button" class="btn btn-primary">Submit</button>
 <input id="key" type="text" name="name" />
-<button id="save-button" type="button">Save</button>
+<button id="save-button" type="button" class="btn btn-success">Save</button>
 
 <h2>Saved Commands</h2>
 
-<table>
-    <tr>
-        <td>Command Name</td>
-        <td>Command Definition</td>
-        <td>Delete Command</td>
-    </tr>
-    @foreach (KeyValuePair<string, string> item in Model)
-    {
-        <tr>
-            <td><a asp-area="DataWarehouse" asp-controller="Data" asp-action="CommandExecute" asp-route-name=@item.Key>@item.Key</a></td>
-            <td><pre>@item.Value</pre></td>
-            <td><button type="button" class="delete-button">Delete</button></td>
-        </tr>
-    }
-</table>
+<div class="table-responsive">
+    <table class="table table-striped table-hover table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Command Name</th>
+                <th scope="col">Command Definition</th>
+                <th scope="col">Delete Command</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (KeyValuePair<string, string> item in Model)
+            {
+                <tr>
+                    <td><a asp-area="DataWarehouse" asp-controller="Data" asp-action="CommandExecute" asp-route-name=@item.Key>@item.Key</a></td>
+                    <td><pre>@item.Value</pre></td>
+                    <td><button type="button" class="delete-button btn btn-danger">Delete</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 
 @section Scripts {
     <script src="~/Areas/DataWarehouse/js/CommandQuery.js"></script>

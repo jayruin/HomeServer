@@ -6,22 +6,24 @@
 <h1>Create Table</h1>
 
 <form method="post" action="/DataWarehouse/Data/CreateTableSubmit">
-    <input type="text" name="tableName" />
-    <button id="AddColumn" type="button">Add Column</button>
-    <table>
-        <thead>
-            <tr>
-                <th scope="col">Column</th>
-                <th scope="col">Type</th>
-                <th scope="col">Primary Key</th>
-                <th scope="col">Not Null</th>
-                <th scope="col">Unique</th>
-                <th scope="col">Delete</th>
-            </tr>
-        </thead>
-        <tbody id="tbody"></tbody>
-    </table>
-    <button type="submit">Create Table</button>
+    <input type="text" name="tableName" placeholder="Table Name" />
+    <button id="AddColumn" type="button" class="btn btn-secondary">Add Column</button>
+    <div class="table-responsive">
+        <table class="table table-striped table-hover table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Column</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Primary Key</th>
+                    <th scope="col">Not Null</th>
+                    <th scope="col">Unique</th>
+                    <th scope="col">Delete</th>
+                </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+        </table>
+    </div>
+    <button type="submit" class="btn btn-primary">Create Table</button>
 </form>
 
 @section Scripts {

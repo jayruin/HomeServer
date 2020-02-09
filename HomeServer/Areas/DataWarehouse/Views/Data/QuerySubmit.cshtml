@@ -3,37 +3,34 @@
     ViewData["Title"] = "QueryExecute";
 }
 
-@section Styles {
-    <link rel="stylesheet" href="~/css/main.css" />
-    <link rel="stylesheet" href="~/Areas/DataWarehouse/css/tables.css" />
-}
-
 <h1>Query Execute</h1>
 
 <form asp-area="DataWarehouse" asp-controller="Data" asp-action="ExportCSV" method="post" asp-route-query=@Model.Query>
-    <button type="submit">Export CSV</button>
+    <button type="submit" class="btn btn-primary">Export CSV</button>
 </form>
 
-<table>
-    <thead>
-        <tr>
-            @foreach (HomeServer.Utility.SQLiteColumn column in Model.Columns)
-            {
-                <th scope="col">
-                    <div>@column.Name</div>
-                </th>
-            }
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (List<string> row in Model.Rows)
-        {
+<div class="table-responsive">
+    <table class="table table-striped table-hover table-bordered">
+        <thead class="thead-dark">
             <tr>
-                @foreach (string item in row)
+                @foreach (HomeServer.Utility.SQLiteColumn column in Model.Columns)
                 {
-                    <td>@item</td>
+                    <th scope="col">
+                        <div>@column.Name</div>
+                    </th>
                 }
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (List<string> row in Model.Rows)
+            {
+                <tr>
+                    @foreach (string item in row)
+                    {
+                        <td>@item</td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

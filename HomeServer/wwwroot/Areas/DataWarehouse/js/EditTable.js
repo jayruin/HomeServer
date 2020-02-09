@@ -1,11 +1,11 @@
 ﻿var definition = document.getElementById("definition");
 var definitionButton = document.getElementById("definition-button");
 function toggleDefinition() {
-    if (definition.style.display === "block") {
-        definition.style.display = "none";
+    if (definition.className === "d-none") {
+        definition.className = "";
     }
     else {
-        definition.style.display = "block";
+        definition.className = "d-none";
     }
 }
 definitionButton.addEventListener("click", toggleDefinition);
@@ -83,7 +83,7 @@ function startEdit(e) {
 
     var submitEditButton = document.createElement("button");
     submitEditButton.type = "button";
-    submitEditButton.className = "edit-button temp";
+    submitEditButton.className = "edit-button temp btn btn-success";
     submitEditButton.setAttribute("form", "edit-row");
     submitEditButton.textContent = "Go";
     submitEditButton.addEventListener("click", submitForm);
@@ -94,7 +94,7 @@ function startEdit(e) {
 
     var cancelEditButton = document.createElement("button");
     cancelEditButton.type = "button";
-    cancelEditButton.className = "delete-button temp";
+    cancelEditButton.className = "delete-button temp btn btn-danger";
     cancelEditButton.textContent = "Cancel";
     cancelEditButton.addEventListener("click", cancelEdit)
     td = document.createElement("td");

@@ -54,6 +54,7 @@ function addColumn() {
     unique.value = "true";
     deleteButton.type = "button";
     deleteButton.textContent = "Delete";
+    deleteButton.className = "btn btn-danger";
     deleteButton.addEventListener("click", deleteColumn);
 
     column.name = `tableColumns[${count}].Column`;

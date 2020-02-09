@@ -4,32 +4,32 @@
 }
 
 @section Styles {
-    <link rel="stylesheet" href="~/css/main.css" />
     <link rel="stylesheet" href="~/Areas/DataWarehouse/css/tables.css" />
 }
 
 <h1>@Model.Name</h1>
 
-<form asp-area="DataWarehouse" asp-controller="Data" asp-action="ExportCSV" method="post" asp-route-query=@Model.Query>
-    <button type="submit">Export CSV</button>
-</form>
+<form id="export-csv" asp-area="DataWarehouse" asp-controller="Data" asp-action="ExportCSV" method="post" asp-route-query=@Model.Query></form>
 
-<button id="definition-button" type="button">Definition</button>
-
-<pre id="definition" class="hide">@Model.Definition</pre>
-
-<form id="add-row" class="hide" asp-area="DataWarehouse" asp-controller="Data" asp-action="AddRow" method="post" asp-route-tableName=@Model.Name></form>
-<form id="delete-row" class="hide" asp-area="DataWarehouse" asp-controller="Data" asp-action="DeleteRow" method="post" asp-route-tableName=@Model.Name></form>
-<form id="edit-row" class="hide" asp-area="DataWarehouse" asp-controller="Data" asp-action="EditRow" method="post" asp-route-tableName=@Model.Name></form>
-<div id="hiddenInputs" class="hide">
+<form id="add-row" class="d-none" asp-area="DataWarehouse" asp-controller="Data" asp-action="AddRow" method="post" asp-route-tableName=@Model.Name></form>
+<form id="delete-row" class="d-none" asp-area="DataWarehouse" asp-controller="Data" asp-action="DeleteRow" method="post" asp-route-tableName=@Model.Name></form>
+<form id="edit-row" class="d-none" asp-area="DataWarehouse" asp-controller="Data" asp-action="EditRow" method="post" asp-route-tableName=@Model.Name></form>
+<div id="hiddenInputs" class="d-none">
     @foreach (HomeServer.Utility.SQLiteColumn column in Model.Columns)
     {
         <input type="text" form="" name="row[@{Model.Columns.IndexOf(column);}]" />
     }
 </div>
 
-<table>
-    <thead>
+<div class="d-inline">
+    <button type="submit" form="export-csv" class="btn btn-primary">Export CSV</button>
+    <button id="definition-button" type="button" class="btn btn-secondary">Definition</button>
+</div>
+
+<pre id="definition" class="d-none">@Model.Definition</pre>
+
+<table class="table table-striped table-hover table-bordered">
+    <thead class="thead-dark">
         <tr>
             @foreach (HomeServer.Utility.SQLiteColumn column in Model.Columns)
             {
@@ -38,8 +38,8 @@
                     <input type="text" placeholder="@column.Type" form="add-row" name="row[@{Model.Columns.IndexOf(column);}]" />
                 </th>
             }
-            <td class="vertical-align-bottom td-button"><button type="submit" id="add-button" form="add-row">Add</button></td>
-            <td class="vertical-align-bottom td-button"><button type="button" id="clear-button">Clear</button></td>
+            <th class="align-bottom td-button"><button type="submit" id="add-button" form="add-row" class="btn btn-success">Add</button></th>
+            <th class="align-bottom td-button"><button type="button" id="clear-button" class="btn btn-danger">Clear</button></th>
         </tr>
     </thead>
     <tbody>
@@ -50,8 +50,8 @@
                 {
                     <td>@item</td>
                 }
-                <td class="td-button"><button type="button" class="edit-button">Edit</button></td>
-                <td class="td-button"><button type="button" class="delete-button" form="delete-row">Delete</button></td>
+                <td class="td-button"><button type="button" class="edit-button btn btn-success">Edit</button></td>
+                <td class="td-button"><button type="button" class="delete-button btn btn-danger" form="delete-row">Delete</button></td>
             </tr>
         }
     </tbody>

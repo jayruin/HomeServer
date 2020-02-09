@@ -2,15 +2,9 @@
     empty-cells: show;
 }
 
-table, th, td {
-    border-collapse: collapse;
-    border: 1px solid black;
-}
-
-thead tr th, thead tr td {
+thead tr th{
     position: sticky;
     top: 0;
-    background-color: rgba(255, 255, 255, 1);
     background-clip: padding-box;
 }
 

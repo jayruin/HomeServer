@@ -5,9 +5,9 @@
 
 <h1>Tables</h1>
 
-<ul>
+<div class="list-group">
     @foreach ((string, string) table in Model.TablesList)
     {
-        <li><a asp-area="DataWarehouse" asp-controller="Data" asp-action="EditTable" asp-route-tableName=@table.Item1>@table.Item1</a></li>
+        <a asp-area="DataWarehouse" asp-controller="Data" asp-action="EditTable" asp-route-tableName=@table.Item1 class="list-group-item list-group-item-action">@table.Item1</a>
     }
-</ul>
+</div>
