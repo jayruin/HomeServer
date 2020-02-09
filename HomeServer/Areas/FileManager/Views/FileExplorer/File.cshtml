@@ -3,18 +3,21 @@
     ViewData["Title"] = "File";
 }
 
-<link rel="stylesheet" href="~/css/main.css" />
-<link rel="stylesheet" href="~/Areas/FileManager/css/file.css" />
+@section Styles {
+    <link rel="stylesheet" href="~/Areas/FileManager/css/file.css" />
+}
 
 <h1>@Model.Name</h1>
 
-<form id="download-form" asp-area="FileManager" asp-controller="FileExplorer" asp-action="Download" asp-route-base64Path="@Model.NodePathBase64" method="get">
-    <button type="submit">Download</button>
-</form>
+<div class="d-inline">
+    <button form="download-form" type="submit" class="btn btn-dark">Download</button>
+    <button form="delete-directory-form" type="submit" class="btn btn-danger">Delete</button>
+</div>
 
-<form id="create-directory-form" asp-area="FileManager" asp-controller="FileExplorer" asp-action="Delete" method="post">
-    <textarea name="base64path" class="hide">@Model.NodePathBase64</textarea>
-    <button type="submit">Delete</button>
+<form id="download-form" asp-area="FileManager" asp-controller="FileExplorer" asp-action="Download" asp-route-base64Path="@Model.NodePathBase64" method="get"></form>
+
+<form id="delete-directory-form" asp-area="FileManager" asp-controller="FileExplorer" asp-action="Delete" method="post">
+    <textarea name="base64path" class="d-none">@Model.NodePathBase64</textarea>
 </form>
 
 @if (Model.MimeType.StartsWith("image"))

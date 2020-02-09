@@ -3,65 +3,72 @@
     ViewData["Title"] = "Directory";
 }
 
-<link rel="stylesheet" href="~/css/main.css" />
-<link rel="stylesheet" href="~/Areas/FileManager/css/directory.css" />
-
 <h1>@Model.NodePath</h1>
 
-<form id="download-form" asp-area="FileManager" asp-controller="FileExplorer" asp-action="Download" asp-route-base64Path="@Model.NodePathBase64" method="get">
-    <button type="submit">Download</button>
+<div class="d-inline">
+    <button form="download-form" type="submit" class="btn btn-dark">Download</button>
+    <button form="delete-directory-form"type="submit" class="btn btn-danger">Delete</button>
+</div>
+
+<form id="download-form" asp-area="FileManager" asp-controller="FileExplorer" asp-action="Download" asp-route-base64Path="@Model.NodePathBase64" method="get"></form>
+
+<form id="delete-directory-form" asp-area="FileManager" asp-controller="FileExplorer" asp-action="Delete" method="post">
+    <textarea name="base64path" class="d-none">@Model.NodePathBase64</textarea>
 </form>
 
-<form id="create-directory-form" asp-area="FileManager" asp-controller="FileExplorer" asp-action="CreateDirectory" asp-route-base64Path="@Model.NodePathBase64" method="post">
-    <input type="text" name="newDirectoryName" placeholder="New Directory Name" />
-    <button type="submit">Create New Directory</button>
+<form id="create-directory-form" asp-area="FileManager" asp-controller="FileExplorer" asp-action="CreateDirectory" asp-route-base64Path="@Model.NodePathBase64" method="post" class="form-inline">
+    <div class="input-group mb-2 mr-sm-2">
+        <input type="text" name="newDirectoryName" placeholder="New Directory Name" />
+    </div>
+    <button type="submit" class="btn btn-primary">Create New Directory</button>
 </form>
 
-<form id="create-directory-form" asp-area="FileManager" asp-controller="FileExplorer" asp-action="Delete" method="post">
-    <textarea name="base64path" class="hide">@Model.NodePathBase64</textarea>
-    <button type="submit">Delete</button>
+<form id="create-directory-form" asp-area="FileManager" asp-controller="FileExplorer" asp-action="UploadFiles" method="post" enctype="multipart/form-data" class="form-inline">
+    <textarea name="base64path" class="d-none">@Model.NodePathBase64</textarea>
+    <label for="upload-files" class="mb-2 mr-sm-2">Choose files to upload:</label>
+    <div class="input-group mb-2 mr-sm-2">
+        <input type="file" name="uploadedFiles" multiple id="upload-files" class="form-control-file" />
+    </div>
+    <button type="submit" class="btn btn-success mb-2">Upload</button>
 </form>
 
-<form id="create-directory-form" asp-area="FileManager" asp-controller="FileExplorer" asp-action="UploadFiles" method="post" enctype="multipart/form-data">
-    <textarea name="base64path" class="hide">@Model.NodePathBase64</textarea>
-    <input type="file" name="uploadedFiles" multiple />
-    <button type="submit">Upload</button>
-</form>
-
-<table>
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Size</th>
-            <th>Type</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (FileSystemNode childNode in Model.ChildNodes)
-        {
+<div class="table-responsive">
+    <table class="table table-striped table-hover table-bordered">
+        <thead class="thead-dark">
             <tr>
-                <td><a asp-area="FileManager" asp-controller="FileExplorer" asp-action="Browse" asp-route-base64Path="@childNode.NodePathBase64">@childNode.Name</a></td>
-                <td>@childNode.Size</td>
-                @{
-                    if (childNode.IsDirectory)
-                    {
-                        <td>Directory</td>
-                    }
-                    else if (childNode.IsFile)
-                    {
-                        <td>File</td>
-                    }
-                    else
-                    {
-                        <td>Unknown</td>
-                    }
-                 }
-                <td>
-                    <form id="download-form" asp-area="FileManager" asp-controller="FileExplorer" asp-action="Download" asp-route-base64Path="@childNode.NodePathBase64" method="get">
-                        <button type="submit">Download</button>
-                    </form>
-                </td>
+                <th>Name</th>
+                <th>Size</th>
+                <th>Type</th>
+                <th>Action</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (FileSystemNode childNode in Model.ChildNodes)
+            {
+                <tr>
+                    <td><a asp-area="FileManager" asp-controller="FileExplorer" asp-action="Browse" asp-route-base64Path="@childNode.NodePathBase64">@childNode.Name</a></td>
+                    <td>@childNode.Size</td>
+                    @{
+                        if (childNode.IsDirectory)
+                        {
+                            <td>Directory</td>
+                        }
+                        else if (childNode.IsFile)
+                        {
+                            <td>File</td>
+                        }
+                        else
+                        {
+                            <td>Unknown</td>
+                        }
+                    }
+                    <td>
+                        <form id="download-form" asp-area="FileManager" asp-controller="FileExplorer" asp-action="Download" asp-route-base64Path="@childNode.NodePathBase64" method="get">
+                            <button type="submit" class="btn btn-dark">Download</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
