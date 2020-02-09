@@ -56,6 +56,11 @@
                         <td>Unknown</td>
                     }
                  }
+                <td>
+                    <form id="download-form" asp-area="FileManager" asp-controller="FileExplorer" asp-action="Download" asp-route-base64Path="@childNode.NodePathBase64" method="get">
+                        <button type="submit">Download</button>
+                    </form>
+                </td>
             </tr>
         }
     </tbody>
