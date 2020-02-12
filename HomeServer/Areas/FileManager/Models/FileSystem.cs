@@ -86,11 +86,11 @@ namespace HomeServer.Areas.FileManager.Models
         {
             get
             {
-                if (!NodePath.Contains(@"\"))
+                if (!NodePath.Contains(Path.DirectorySeparatorChar))
                 {
                     return "";
                 }
-                int rootIndex = NodePath.IndexOf(@"\") + 1;
+                int rootIndex = NodePath.IndexOf(Path.DirectorySeparatorChar) + 1;
                 return Base64.Base64Encode(NodePath.Substring(rootIndex, NodePath.Length - rootIndex));
             }
         }
