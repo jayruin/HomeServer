@@ -110,7 +110,10 @@ namespace HomeServer.Areas.FileManager.Models
             get
             {
                 string type = "";
-                mimeMapper.TryGetContentType(NodePath, out type);
+                if (!mimeMapper.TryGetContentType(NodePath, out type))
+                {
+                    type = "application/octet-stream";
+                }
                 return type;
             }
         }
