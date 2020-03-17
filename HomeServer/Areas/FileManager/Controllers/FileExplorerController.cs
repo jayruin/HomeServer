@@ -55,6 +55,13 @@ namespace HomeServer.Areas.FileManager.Controllers
         }
 
         [HttpPost]
+        public IActionResult Rename(string base64Path, string newName)
+        {
+            FileSystemNode model = FileSystem.GetNode(Base64.Base64Decode(base64Path ?? ""));
+            return RedirectToAction("Browse", "FileExplorer", new { area = "FileManager", base64Path = FileSystem.Rename(model, newName).NodePathBase64 });
+        }
+
+        [HttpPost]
         public IActionResult Delete(string base64Path)
         {
             FileSystemNode model = FileSystem.GetNode(Base64.Base64Decode(base64Path ?? ""));

@@ -45,6 +45,25 @@ namespace HomeServer.Areas.FileManager.Models
             }
         }
 
+        public static FileSystemNode Rename(FileSystemNode node, string newName)
+        {
+            if (node.NodePath.Equals(root))
+            {
+                return node;
+            }
+
+            string newPath = Path.Join(Path.GetDirectoryName(node.NodePath), newName);
+            if (node.IsFile)
+            {
+                File.Move(node.NodePath, newPath);
+            }
+            else if (node.IsDirectory)
+            {
+                Directory.Move(node.NodePath, newPath);
+            }
+            return new FileSystemNode(newPath, systemMimeMapper);
+        }
+
         public static FileSystemNode Delete(FileSystemNode node)
         {
             if (node.NodePath.Equals(root))
