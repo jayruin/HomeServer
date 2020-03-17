@@ -16,10 +16,20 @@
     <textarea name="base64path" class="d-none">@Model.NodePathBase64</textarea>
 </form>
 
-<form id="rename-directory-form" asp-area="FileManager" asp-controller="FileExplorer" asp-action="Rename" method="post">
+<form id="rename-directory-form" asp-area="FileManager" asp-controller="FileExplorer" asp-action="Rename" method="post" class="form-inline">
     <textarea name="base64path" class="d-none">@Model.NodePathBase64</textarea>
-    <input type="text" name="newName" placeholder="Rename" />
-    <button type="submit">Rename</button>
+    <div class="input-group mb-2 mr-sm-2">
+        <input type="text" name="newName" placeholder="Rename" />
+    </div>
+    <button type="submit" class="btn btn-primary">Rename</button>
+</form>
+
+<form id="rename-file-form" asp-area="FileManager" asp-controller="FileExplorer" asp-action="Move" method="post" class="form-inline">
+    <textarea name="base64path" class="d-none">@Model.NodePathBase64</textarea>
+    <div class="input-group mb-2 mr-sm-2">
+        <input type="text" name="urlBase64NewPath" placeholder="Move" />
+    </div>
+    <button type="submit" class="btn btn-primary">Move</button>
 </form>
 
 <form id="create-directory-form" asp-area="FileManager" asp-controller="FileExplorer" asp-action="CreateDirectory" asp-route-base64Path="@Model.NodePathBase64" method="post" class="form-inline">

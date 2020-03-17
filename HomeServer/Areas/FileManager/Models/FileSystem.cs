@@ -52,7 +52,26 @@ namespace HomeServer.Areas.FileManager.Models
                 return node;
             }
 
-            string newPath = Path.Join(Path.GetDirectoryName(node.NodePath), newName);
+            string newPath = Path.Combine(Path.GetDirectoryName(node.NodePath), newName);
+            if (node.IsFile)
+            {
+                File.Move(node.NodePath, newPath);
+            }
+            else if (node.IsDirectory)
+            {
+                Directory.Move(node.NodePath, newPath);
+            }
+            return new FileSystemNode(newPath, systemMimeMapper);
+        }
+
+        public static FileSystemNode Move(FileSystemNode node, string newLocation)
+        {
+            if (node.NodePath.Equals(root))
+            {
+                return node;
+            }
+
+            string newPath = Path.Combine(root, newLocation, node.Name);
             if (node.IsFile)
             {
                 File.Move(node.NodePath, newPath);

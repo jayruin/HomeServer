@@ -7,6 +7,7 @@ using HomeServer.Utility;
 using HomeServer.Areas.FileManager.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using System.Net;
 
 namespace HomeServer.Areas.FileManager.Controllers
 {
@@ -59,6 +60,14 @@ namespace HomeServer.Areas.FileManager.Controllers
         {
             FileSystemNode model = FileSystem.GetNode(Base64.Base64Decode(base64Path ?? ""));
             return RedirectToAction("Browse", "FileExplorer", new { area = "FileManager", base64Path = FileSystem.Rename(model, newName).NodePathBase64 });
+        }
+
+        [HttpPost]
+        public IActionResult Move(string base64Path, string urlBase64NewPath)
+        {
+            FileSystemNode model = FileSystem.GetNode(Base64.Base64Decode(base64Path ?? ""));
+            string newPath = Base64.Base64Decode(WebUtility.UrlDecode(urlBase64NewPath) ?? "");
+            return RedirectToAction("Browse", "FileExplorer", new { area = "FileManager", base64Path = FileSystem.Move(model, newPath).NodePathBase64 });
         }
 
         [HttpPost]
