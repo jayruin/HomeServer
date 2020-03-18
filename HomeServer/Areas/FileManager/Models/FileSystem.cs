@@ -172,6 +172,45 @@ namespace HomeServer.Areas.FileManager.Models
             }
         }
 
+        public FileSystemNode RootNode
+        {
+            get
+            {
+                string rootPath = NodePath.Split(new char[] { Path.DirectorySeparatorChar })[0];
+                return new FileSystemNode(rootPath, mimeMapper);
+            }
+        }
+
+        public List<FileSystemNode> Ancestors
+        {
+            get
+            {
+                List<FileSystemNode> nodeAncestors = new List<FileSystemNode>();
+                FileSystemNode currNode = this;
+                while (currNode != null)
+                {
+                    nodeAncestors.Add(currNode);
+                    currNode = currNode.ParentNode;
+                }
+                nodeAncestors.Reverse();
+                return nodeAncestors;
+            }
+        }
+
+        public FileSystemNode ParentNode
+        {
+            get
+            {
+                string parentDirectory = Path.GetDirectoryName(NodePath);
+                string rootDirectory = Path.GetPathRoot(NodePath);
+                if (parentDirectory == rootDirectory)
+                {
+                    return null;
+                }
+                return new FileSystemNode(parentDirectory, mimeMapper);
+            }
+        }
+
         public List<FileSystemNode> ChildNodes
         {
             get

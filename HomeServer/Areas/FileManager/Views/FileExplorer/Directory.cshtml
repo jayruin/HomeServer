@@ -3,7 +3,12 @@
     ViewData["Title"] = "Directory";
 }
 
-<h1>@Model.NodePath</h1>
+<h1>
+    @foreach (FileSystemNode ancestorNode in Model.Ancestors)
+    {
+        <text>/ </text><a asp-area="FileManager" asp-controller="FileExplorer" asp-action="Browse" asp-route-base64Path="@ancestorNode.NodePathBase64">@ancestorNode.Name</a>
+    }
+</h1>
 
 <div class="d-inline">
     <button form="download-form" type="submit" class="btn btn-dark">Download</button>
